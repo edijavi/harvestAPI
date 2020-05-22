@@ -12,7 +12,7 @@ function pruebas(req, res) {
 }
 
 function saveUser(req, res){
-  var user = new User()
+  var user = new User();
 
   var params = req.body;
   //test
