@@ -1,7 +1,6 @@
 'use strict'
 
 const jwt = require('../services/JwtResponse');
-const expiresIn = 24 * 60 * 60;
 const bcrypt = require('bcryptjs');
 var User = require('../models/user');
 
@@ -12,13 +11,13 @@ function loginUser(req, res) {
   const password = req.body.password;
   User.findOne({
     email: email
-  }, (err, user) => {
+  }, (err, user) => {    
     if (err) return res.status(500).send('Server error!');
     if (!user) return res.status(404).send('User not found!');
     const result = bcrypt.compareSync(password, user.password);
     if (!result) return res.status(401).send('Password not valid!');
     res.status(200).send({
-      user: userStored,
+      user: user,
       access_token: jwt.createToken(user),
       expires_in: '24h'
     });
@@ -28,14 +27,13 @@ function loginUser(req, res) {
 
 function register(req, res) {
   var user = new User();
-  var params = req.body;
-  debugger
+  var params = req.body;  
   user.name = params.name;
   user.surname = params.surname;
   user.email = params.email;
   user.role = 'ROLE_USER';
   user.image = 'null';
-  debugger
+  
   if (req.body.password) {
     //Ecriptar la contraseña
     bcrypt.hash(params.password, null, function (err, hash) {
