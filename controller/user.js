@@ -18,9 +18,9 @@ function loginUser(req, res) {
     const result = bcrypt.compareSync(password, user.password);
     if (!result) return res.status(401).send('Password not valid!');
     res.status(200).send({
-      'user': user,
-      'access_token': jwt.createToken(user),
-      'expires_in': expiresIn
+      user: userStored,
+      access_token: jwt.createToken(user),
+      expires_in: '24h'
     });
   });
 };
@@ -33,7 +33,7 @@ function register(req, res) {
   user.name = params.name;
   user.surname = params.surname;
   user.email = params.email;
-  user.role = 'ROLE_ADMIN';
+  user.role = 'ROLE_USER';
   user.image = 'null';
   debugger
   if (req.body.password) {
@@ -55,8 +55,8 @@ function register(req, res) {
             } else {
               res.status(200).send({
                 user: userStored,
-                access_token: jwt.createToken(user),
-                expires_in: expiresIn
+                access_token: jwt.createToken(userStored),
+                expires_in: '24h'
               });
             }
           }
