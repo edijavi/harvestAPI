@@ -35,19 +35,19 @@ function register(req, res) {
   user.image = 'null';
   
   if (params.password) {    
-    //Ecriptar la contraseña
+    //Encrypt the password
       user.password = bcrypt.hashSync(params.password, 8);
       if (user.name != null && user.surname != null && user.email != null) {
-        //guardar el usuario
+        //Save the user
         user.save((err, userStored) => {
           if (err) {
             res.status(500).send({
-              message: 'Error al guardar el usuario'
+              message: 'Error during the saving process'
             });
           } else {
             if (!userStored) {
               res.status(404).send({
-                message: 'No se ha regustrado el usuario'
+                message: 'User not registered'
               });
             } else {
               res.status(200).send({
@@ -60,13 +60,12 @@ function register(req, res) {
         });
       } else {
         res.status(200).send({
-          message: 'Introduce todos los campos'
+          message: 'Complete all the fields'
         });
       }
-    // });
   } else {
     res.status(200).send({
-      message: 'Introduce la contraseña'
+      message: 'Type the password'
     });
   }
 }
