@@ -35,7 +35,7 @@ function register(req, res) {
   user.role = 'ROLE_USER';
   user.image = 'null';
   
-  if (req.body.password) {
+  if (params.password) {
     //Ecriptar la contraseña
     bcrypt.hash(params.password, null, function (err, hash) {
       user.password = hash;
