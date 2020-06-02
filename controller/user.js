@@ -31,16 +31,14 @@ function register(req, res) {
   user.name = params.name;
   user.surname = params.surname;
   user.email = params.email;
-  user.password = params.password;
   user.role = 'ROLE_USER';
   user.image = 'null';
   
-  if (params.password) {
+  if (params.password) {    
     //Ecriptar la contraseña
-    bcrypt.hash(params.password, null, function (err, hash) {
-      user.password = hash;
+      user.password = bcrypt.hashSync(params.password, 8);
       if (user.name != null && user.surname != null && user.email != null) {
-        //guardar el usuario 
+        //guardar el usuario
         user.save((err, userStored) => {
           if (err) {
             res.status(500).send({
@@ -65,14 +63,13 @@ function register(req, res) {
           message: 'Introduce todos los campos'
         });
       }
-    });
+    // });
   } else {
     res.status(200).send({
       message: 'Introduce la contraseña'
     });
   }
 }
-
 
 module.exports = {
   loginUser,
